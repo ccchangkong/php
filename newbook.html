@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>new book</title>
+  <style>
+label{
+	min-width: 4em;
+	display: inline-block;
+	}
+  </style>
+</head>
+
+<body>
+  <h1>new book</h1>
+  <form action="insert_book.php" method="post">
+    <p>
+      <label for="isbn">isbn</label>
+      <input type="text" name="isbn">
+    </p>
+    <p>
+      <label for="author">author</label>
+      <input type="text" name="author">
+    </p>
+    <p>
+      <label for="title">title</label>
+      <input type="text" name="title">
+    </p>
+    <p>
+      <label for="price">price</label>
+      <input type="text" name="price">
+    </p>
+    <input type="submit" value="Register">
+  </form>
+</body>
+
+</html>
