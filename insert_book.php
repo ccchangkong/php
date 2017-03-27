@@ -20,23 +20,30 @@ if (!get_magic_quotes_gpc()) {
 	$isbn = addslashes($isbn);
 	$author = addslashes($author);
 	$title = addslashes($title);
-	$price = addslashes($price);
+	$price = doubleval($price);
 }
 @$db = new mysqli('localhost', 'bookorama', 'bookorama123', 'books');
 if (mysqli_connect_errno()) {
 	echo "can not connect to dadabase";
 	exit;
 }
-$query = "insert into books values ('" . $isbn . "','" . $author . "','" . $title . "','" . $price . "')";
-$result = $db->query($query);
+// $query = "insert into books values ('" . $isbn . "','" . $author . "','" . $title . "','" . $price . "')";
+// $result = $db->query($query);
 
-if ($result) {
-	echo $db->affected_rows . " book inserted into database.";
-} else {
-	echo "not added.";
-}
+// if ($result) {
+// 	echo $db->affected_rows . " book inserted into database.";
+// } else {
+// 	echo "not added.";
+// }
 
-$db->close();
+// $db->close();
+
+$query = "insert into books values (?,?,?,?)";
+$stmt = $db->prepare($query);
+$stmt->bind_param("sssd", $isbn, $author, $title, $price);
+$stmt->execute();
+echo $stmt->affected_rows . " book inserted into database.";
+$stmt->close();
 ?>
 </body>
 </html>
