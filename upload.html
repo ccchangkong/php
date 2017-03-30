@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>upload</title>
+</head>
+<body>
+	<form action="upload.php" method="post" enctype="multipart/form-data">
+		<div>
+			<input type="hidden" name="MAX_FILE_SIZE" value="10000000">
+			<label for="userfile">upload</label>
+			<input type="file" name="userfile">
+		</div>
+		<input type="submit" value="send file">
+	</form>
+</body>
+</html>
