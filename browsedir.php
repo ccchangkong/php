@@ -15,7 +15,7 @@ echo "<p>directory listing:</p>";
 echo "<ul>";
 while (false !== ($file = readdir($dir))) {
 	if ($file != "." && $file != '..') {
-		echo "<li>$file</li>";
+		echo "<a href='filedetails.php?file=" . $file . "'>" . $file . "</a>";
 	}
 }
 echo "</ul>";
