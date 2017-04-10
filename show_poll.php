@@ -42,7 +42,7 @@ $bar_unit = ($width - ($x + $right_margin)) / 100;
 
 $height = $num_candidates * ($bar_height + $bar_spacing) + 50;
 
-$im = imagecreatetruecolor($widht, $height);
+$im = imagecreatetruecolor($width, $height);
 
 $white = imagecolorallocate($im, 255, 255, 255);
 $blue = imagecolorallocate($im, 0, 64, 128);
@@ -70,4 +70,25 @@ $title_y = ($y - $title_height) / 2 + $title_above_line;
 imagettftext($im, $title_size, 0, $title_x, $title_y, $text_color, $font, $title);
 imageline($im, $x, $y - 5, $x, $height - 15, $line_color);
 imagefilledrectangle($im, 0, 0, $width, $height, $bg_color);
+
+while ($row = $result->fetch_object()) {
+	if ($total_votes > 0) {
+		$percent = intval(($row->num_votes / $total_votes) * 100);
+	} else {
+		$percent = 0;
+	}
+	$percent_dimensions = imagettfbbox($main_size, 0, $font, $percent . '%');
+	$percent_length = $percent_dimensions[2] - $percent_dimensions[0];
+	imagettftext($im, $main_size, 0, $width - $percent_length - $text_indent, $y + ($bar_height / 2), $percent_color, $font, $percent . '%');
+
+	$bar_length = $x + ($percent * $bar_unit);
+	imagefilledrectangle($im, $x, $y - 2, $bar_length, $y+$$bar_height, $bar_color);
+	imagettftext($im, $main_size, 0, $text_indent, $y + ($bar_height / 2), $text_color, $font, "$row->candidate");
+	imagerectangle($im, $bar_length + 1, $y - 2, ($x + (100 * $bar_unit)), $y + $bar_height, $line_color);
+	imagettftext($im, $small_size, 0, ($x + (100 * $bar_unit) - 50), $y + ($bar_height / 2), $number_color, $font, $row->num_votes . '/' . $total_votes);
+	$y = $y + ($bar_height + $bar_spacing);
+}
+Header('Content-type: image/png');
+imagepng($im);
+imagedestroy($im);
 ?>
