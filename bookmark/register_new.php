@@ -13,7 +13,7 @@ try {
 
 	}
 	if (!valid_email($email)) {
-		throw new Exception('the e-mailnot match', 1);
+		throw new Exception('the e-mail not match', 1);
 
 	}
 	if ($passwd != $passwd2) {

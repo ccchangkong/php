@@ -19,7 +19,7 @@ function login($username, $password) {
 	$conn = db_connect();
 
 	$result = $conn->query("select * from user where username ='" . $username . "'and passwd=sha1('" . $password . "')");
-	if (!result) {
+	if (!$result) {
 		throw new Exception('could not log you in', 1);
 	}
 	if ($result->num_rows > 0) {
@@ -52,4 +52,67 @@ function change_password($username, $old_password, $new_password) {
 		// 480
 	}
 };
+
+function reset_password($username) {
+	$new_password == get_random_word(6, 13);
+	if ($new_password == false) {
+		throw new Exception('could not generate new password', 1);
+	}
+	$rand_number = rand(0, 999);
+	$new_password .= $rand_number;
+
+	$conn = db_connect();
+	$result = $conn->query("update user set passwd=sha1('" . $new_password . "') where username ='" . $username . "'");
+	if (!$result) {
+		throw new Exception('could not change passwd', 1);
+
+	} else {
+		return $new_password;
+	}
+}
+
+function get_random_word($min_length, $max_length) {
+	$word = '';
+	$dirctionary = './english-words.70';
+	$fp = @fopen($dirctionary, 'r');
+	if (!$fp) {
+		return false;
+	}
+	$size = filesize($dirctionary);
+
+	$rand_localtion = rand(0, $size);
+	fseek($fp, $rand_localtion);
+
+	while ((strlen($word) < $min_length) || (strlen($word) > $max_length) || (strstr($word, "'"))) {
+		if (feof($fp)) {
+			fseek($fp, 0);
+		}
+		$word = fgets($fp, 80);
+		$word = fgets($fp, 80);
+	}
+	$word = trim($word);
+	return $word;
+}
+function notify_password($username, $password) {
+	$conn = db_connect();
+	$result = $conn->query("select email from user where username ='" . $username . "'");
+	if (!$result) {
+		throw new Exception('could not find email address.', 1);
+
+	} elseif ($result->num_rows == 0) {
+		throw new Exception('could not find email address.', 1);
+
+	} else {
+		$row = $result->fetch_object();
+		$email = $row->email;
+		$from = "from:support@phpbookmark \r\n";
+		$msg = "you password has been changed to" . $password;
+		if (mail($email, 'bookmark info', $msg, $from)) {
+			return true;
+		} else {
+			throw new Exception('could not send email', 1);
+		}
+	}
+}
 ?>
+
