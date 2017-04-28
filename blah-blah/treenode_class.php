@@ -33,6 +33,11 @@ class treenode {
 			}
 		}
 	}
+	function display($row, $sublist = false) {
+		if ($this->m_depth > -1) {
+			# code...
+		}
+	}
 }
 // 618
 ?>
