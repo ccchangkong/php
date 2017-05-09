@@ -8,10 +8,17 @@
 </head>
 
 <body>
+  <div id="demo"></div>
   <script>
   function getServerTime() {
     var thePage = 'servertime.php';
+    var myRand = parseInt(Math.random() * 999999999);
+    var theUrl = `${thePage}?rand=${myRand}`;
+    $.get(theUrl, function(data) {
+    	console.log(data.childNodes[0]);
+    });
   }
+  getServerTime();
   </script>
 </body>
 
